@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<template>
+  <img src="../assets/GdGmoTLvnJw63kpO.jpg">
+</template>
+
+<script lang="ts">
 
 </script>
-
-<template>
-  $END$
-</template>
 
 <style scoped>
 

@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<template>
+  <question-connexion/>
+</template>
+
+<script lang="ts">
 
 </script>
-
-<template>
-  $END$
-</template>
 
 <style scoped>
 
