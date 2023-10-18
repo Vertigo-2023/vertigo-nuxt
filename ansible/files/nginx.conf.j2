@@ -1,0 +1,23 @@
+proxy_cache_path /var/cache/nginx keys_zone=caripscache:25m;
+
+server {
+    listen {{ http_port }} default_server;
+    listen [::]:{{ http_port }};
+
+    server_name {{ http_host }};
+    proxy_cache caripscache;
+
+    access_log /var/log/nginx/snake_futurestud_io_access.log;
+    error_log  /var/log/nginx/snake_futurestud_io_error.log;
+
+    location / {
+        proxy_pass http://127.0.0.1:7200;
+    }
+}
+
+server {
+    listen {{ https_port }};
+    listen [::]:{{ https_port }};
+    server_name {{ http_host }};
+    return 301 http://{{app_url_front}}/$request_uri;
+}

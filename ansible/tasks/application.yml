@@ -1,0 +1,57 @@
+---
+
+- name: Delete Directory Front
+  ansible.builtin.file:
+    state: absent
+    path: /var/www/verticare-nuxt
+
+- name: Create Application Directory
+  ansible.builtin.file:
+    state: directory
+    path: /var/www/verticare-nuxt
+
+- name: Copy Application
+  copy:
+    src: ../../
+    dest: /var/www/verticare-nuxt/
+
+- name: Delete package-lock.json
+  ansible.builtin.file:
+    state: absent
+    path: /var/www/verticare-nuxtpackage-lock.json
+
+- name: Yarn Install
+  ansible.builtin.shell: yarn
+  args:
+    chdir: /var/www/verticare-nuxt/
+
+- name: Build Frontend
+  ansible.builtin.shell: yarn build
+  args:
+    chdir: /var/www/verticare-nuxt/
+
+- name: Remove PM2 Server
+  ansible.builtin.shell: pm2 delete verticare-nuxt
+  args:
+    chdir: /var/www/verticare-nuxt
+  ignore_errors: true
+
+- name: Start PM2 Server
+  ansible.builtin.shell: pm2 start 'npm start' --name "verticare-nuxt"
+  args:
+    chdir: /var/www/verticare-nuxt/
+
+- name: Save PM2 Server
+  ansible.builtin.shell: pm2 save
+  args:
+    chdir: /var/www/verticare-nuxt/
+
+- name: Sleep for 30 seconds for  restart pm2 Server
+  ansible.builtin.wait_for:
+    timeout: 30
+  delegate_to: localhost
+
+- name: Restart PM2 Server
+  ansible.builtin.shell: pm2 restart verticare-nuxt
+  args:
+    chdir: /var/www/verticare-nuxt/

@@ -14,7 +14,7 @@
         <ul class="menu-links">
           <li class="nav-link" v-for="question in this.questions">
             <a :href="question.id">
-              <span class="text nav-text">{{ question.name }}</span>
+              <span class="text nav-text" style="white-space: pre-line">{{ question.name }}</span>
             </a>
           </li>
 
@@ -26,7 +26,7 @@
     <div class="questions">
       <p style="margin-top: 25px;font-size: 45px"> {{ currentQuestion.question }}</p>
       <div class="question-options">
-        <button v-for="options in currentQuestion.options">{{ options.name }}</button>
+        <button v-for="option in currentQuestion.options"  @click="this.updateQuestion(option.option_value as number)">{{ option.name }}</button>
       </div>
     </div>
   </div>
@@ -43,17 +43,28 @@ export default defineComponent({
       currentQuestion: {} as Question,
       questions: [
         {
+          id: 0,
+          name: "Urgences",
+          question: "Allez aux urgences vite !",
+          options: [
+            {
+              name: "Compris !",
+              option_value: 0,
+            }
+          ]
+        },
+        {
           id: 1,
           name: "Questionnaire patient",
           question: "Avez vous accès au questionnaire patient ?",
           options: [
             {
               name: "oui",
-              value: 1,
+              option_value: 1,
             },
             {
               name: "non",
-              value: 2,
+              option_value: 2,
             }
           ]
         },
@@ -64,11 +75,11 @@ export default defineComponent({
           options: [
             {
               name: "Un drapeau rouge présent",
-              value: 0
+              option_value: 0
             },
             {
               name: "Aucun drapeau rouge présent",
-              value: 3
+              option_value: 3
             }
           ]
         },
@@ -79,26 +90,37 @@ export default defineComponent({
           options: [
             {
               name: "oui",
-              value: 4
+              option_value: 4
             },
             {
               name: "non",
-              value: 5
+              option_value: 5
             },
           ]
         },
         {
           id: 4,
           name: "HINTS",
-          question: "Vous aurez besoin :" + '<br>' +
-              "- Examen neurlogique" + '<br>' +
-              "- Examen ORL" + '<br>' +
-              "- DIX et Allpike" + '<br>' +
-              "- HINTS",
+          question: `Vous aurez besoin :\n- Examen neurlogique- Examen ORL- DIX et Allpike- HINTS`,
           options: [
             {
               name: "suivant",
-              value: 6,
+              option_value: 6,
+            }
+          ]
+        },
+        {
+          id: 6,
+          name: "HINTS - confirmation",
+          question: `L'un des HINTS était-il positif ?`,
+          options: [
+            {
+              name: "oui",
+              option_value: 0,
+            },
+            {
+              name: "non",
+              option_value: 9,
             }
           ]
         },
@@ -109,15 +131,15 @@ export default defineComponent({
           options: [
             {
               name: "Vertical",
-              value: 7,
+              option_value: 4,
             },
             {
               name: "Horizonto-rotatoire",
-              value: 4,
+              option_value: 7,
             },
             {
               name: "Non",
-              value: 5
+              option_value: 7
             }
           ]
         }
@@ -129,6 +151,13 @@ export default defineComponent({
       this.isSidebarClosed = !this.isSidebarClosed;
       console.log(this.isSidebarClosed)
     },
+    updateQuestion(idCible: number){
+      this.currentQuestion = this.questions.find((question: { id: number; }) => question.id === idCible) as Question
+      console.log(idCible)
+    }
+  },
+  computed:{
+
   },
   mounted() {
     this.currentQuestion = this.questions.find((question: { id: number; }) => question.id == 1) as Question

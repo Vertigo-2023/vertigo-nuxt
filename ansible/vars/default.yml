@@ -1,0 +1,8 @@
+---
+app_url_front: "verticare.fr"
+http_host: "verticare.fr www.verticare.fr"
+http_conf: "verticare.fr.conf"
+http_port: "80"
+https_port: "443"
+node_version: "18"
+
